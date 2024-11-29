@@ -1,39 +1,47 @@
 import sqlite3
 import pandas as pd
 import json
+import os
+
+# Paraméterek
+db_name = "loaddata.db"
+json_list = ["metrics.json", "costs.json"]
+
+# JSON fájl beolvasása és táblázatos formátumra alakítása
+def load_json(json_file):
+    if not os.path.exists(json_file):
+        raise FileNotFoundError(f"JSON file not found: {json_file}")
+    
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+    
+    if isinstance(data, dict):
+        # A metrics.json szabályos, azt dataframe-mé alakítjuk, míg a costs.json nem ilyen, így hiányoznak a mezőnevek, ezt pótoljuk
+        return pd.DataFrame([{"instance_name": k, "cpu_ms": v} for k, v in data.items()])
+        # Átalakítjuk a szótárat egy listává, sajnos ez hard wired, mert nincsenek oszlopneveink
+    else:
+        return pd.DataFrame(data)
+
+# Adatok írása az adatbázisba
+def write_to_db(table_name, df):
+    with sqlite3.connect(db_name) as conn:
+        df.to_sql(table_name, conn, if_exists='replace', index=False)
+    print(f'{len(df)} rows stored in the table {table_name}')
+
+# JSON fájlok feldolgozása
+def process_json_files():
+    for json_file in json_list:
+        # JSON beolvasása
+        df = load_json(json_file)
+        print(f"Data from {json_file}:")
+        print(df)
+
+        # Táblanév a JSON fájl nevéből
+        table_name = json_file.split(".")[0]
+
+        # Adatok írása az adatbázisba
+        write_to_db(table_name, df)
 
 
-class LoadService:
-    '''
-    Handles db and tables creation
-    '''
-    def __init__(self, local_db_name="loaddata.db", local_json_name="metrics.json"):
-        self.local_path = ""
-        self.local_db_name = self.local_path+local_db_name
-        self.local_json_name = self.local_path+local_json_name
-        self.df = pd.DataFrame()
-        self.init_db()
-        self.load_json()
-
-    def load_json(self):
-        self.df = pd.read_json(self.local_json_name)
-        print(self.df)
-
-    def init_db(self):
-        #Initialize the local SQLite database
-        with sqlite3.connect(self.local_db_name) as conn:
-            cursor = conn.cursor()
-            #Create table for metrics
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS metrics (
-                    warehouse_name TEXT,
-                    task_name TEXT,
-                    instance_name TEXT,
-                    cpu_ms INTEGER
-                )
-            ''')
-            conn.commit()
-
-
-
-myservice = LoadService()
+if __name__ == "__main__":
+    process_json_files()

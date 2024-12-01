@@ -4,7 +4,7 @@ import json
 import os
 
 # Paraméterek
-db_name = "loaddata.db"
+db_name = "/app/loaddata.db"
 json_list = ["metrics.json", "costs.json"]
 
 # JSON fájl beolvasása és táblázatos formátumra alakítása
@@ -17,7 +17,7 @@ def load_json(json_file):
     
     if isinstance(data, dict):
         # A metrics.json szabályos, azt dataframe-mé alakítjuk, míg a costs.json nem ilyen, így hiányoznak a mezőnevek, ezt pótoljuk
-        return pd.DataFrame([{"instance_name": k, "cpu_ms": v} for k, v in data.items()])
+        return pd.DataFrame([{"instance_name": k, "cpu_ms_cost": v} for k, v in data.items()])
         # Átalakítjuk a szótárat egy listává, sajnos ez hard wired, mert nincsenek oszlopneveink
     else:
         return pd.DataFrame(data)
@@ -30,6 +30,7 @@ def write_to_db(table_name, df):
 
 # JSON fájlok feldolgozása
 def process_json_files():
+    print("Loading JSON files into database...")
     for json_file in json_list:
         # JSON beolvasása
         df = load_json(json_file)

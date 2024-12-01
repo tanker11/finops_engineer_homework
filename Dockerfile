@@ -13,5 +13,5 @@ COPY *.json /app
 
 # A python fájlok futtatása egymás után
 ENTRYPOINT ["sh", "-c"]
-CMD ["python ddl.py && python etl.py"]
+CMD ["python ddl.py && python etl.py && python query.py"]
 

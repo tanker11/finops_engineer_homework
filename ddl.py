@@ -15,7 +15,7 @@ ddl_list = [
     '''
     CREATE TABLE IF NOT EXISTS costs (
         instance_name TEXT PRIMARY KEY,
-        cpu_ms INTEGER
+        cpu_ms_cost INTEGER
     );
     ''',
     '''

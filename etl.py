@@ -25,7 +25,7 @@ def load_json(json_file):
 # Adatok írása az adatbázisba
 def write_to_db(table_name, df):
     with sqlite3.connect(db_name) as conn:
-        df.to_sql(table_name, conn, if_exists='replace', index=False)
+        df.to_sql(table_name, conn, if_exists='append', index=False)
     print(f'{len(df)} rows stored in the table {table_name}')
 
 # JSON fájlok feldolgozása

@@ -1,5 +1,4 @@
---Create a CTE with warehouse names, tasks, and calculated CPU cost, ranked by cpu_cost per warehouse partitions
---Table joined first with the CPU cost vaues via common instance_name value
+--Pre create a CTE calculating all the costs in advance by joining the costs table to metrics
 WITH METRICS_WITH_COST AS (
   SELECT 
        m.warehouse_name,

@@ -2,7 +2,7 @@
 
 query-k részletezése
 
-(hátravan az optimalizálási lehetőség)
+optimalizálva, logikus sorrend és előre kiszámolt cost
 
 Konténer felépítése:
  docker build -t finopshomework .

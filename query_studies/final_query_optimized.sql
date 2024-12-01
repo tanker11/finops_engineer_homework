@@ -9,6 +9,7 @@ SELECT warehouse_name,
   FROM metrics m
 JOIN costs c
 ON m.instance_name=c.instance_name
+ORDER BY warehouse_name
 ),
 
 --Create a table with warehouse names and tasks ranked by the instance count per this combination
@@ -32,6 +33,7 @@ SELECT warehouse_name,
     instance_count
 FROM USAGE_CTE
 WHERE usage_rank=1
+ORDER BY warehouse_name, task_name
 
 )
 

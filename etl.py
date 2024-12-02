@@ -45,4 +45,8 @@ def process_json_files():
 
 
 if __name__ == "__main__":
+    print("*"*20,"2 - ETL FUTTATÁSA","*"*20)
+
     process_json_files()
+
+    print()

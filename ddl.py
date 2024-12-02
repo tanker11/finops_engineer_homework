@@ -21,10 +21,6 @@ ddl_list = [
     '''
     CREATE INDEX idx_metrics_warehouse_task_instance 
     ON metrics (warehouse_name, task_name, instance_name);
-    ''',
-    '''
-    CREATE INDEX idx_costs_instance_name 
-    ON costs (instance_name);
     '''
 
 ]
@@ -40,4 +36,8 @@ def init_db():
     print(f"Database '{db_name}' initialized and tables created.")
 
 if __name__ == "__main__":
+    print("*"*20,"1 - DDL FUTTATÁSA","*"*20)
+
     init_db()
+
+    print()

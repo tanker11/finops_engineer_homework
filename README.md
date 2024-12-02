@@ -55,7 +55,7 @@ Az elkészült kódokat egy Python alapú konténerben futtatjuk, a Dockerfile n
 Szükség van egy telepített Docker Desktop alkalmazásra, majd ezután:
 
 Konténer felépítése:
- docker build -t finopshomework .
+ '''docker build -t finopshomework .'''
 
 Konténer futtatása:
- docker run --rm finopshomework
+ '''docker run --rm finopshomework'''
